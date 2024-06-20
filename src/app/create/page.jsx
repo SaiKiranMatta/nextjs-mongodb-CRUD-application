@@ -6,8 +6,10 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const BlogPostCreationForm = () => {
+    const { toast } = useToast();
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(true);
 
@@ -27,9 +29,13 @@ const BlogPostCreationForm = () => {
             // Session is still loading, do nothing (optional)
         } else {
             redirect("/");
+            toast({
+                title: "Login Required",
+                description: "You have to be logged in to author a post",
+            });
             // User is not authenticated, continue rendering the component
         }
-    }, [status, redirect, setAuthorEId]);
+    }, [session, status, redirect, setAuthorEId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,6 +59,10 @@ const BlogPostCreationForm = () => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
+            toast({
+                title: "Blog Post Created",
+                description: "Go to blogs section to checkout your blog",
+            });
 
             setMessage("Blog post created successfully!");
             setTitle("");
