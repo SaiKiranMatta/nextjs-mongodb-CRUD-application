@@ -60,7 +60,9 @@ const Navbar = () => {
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>
-                                        Dashboard
+                                        <Link href={"/dashboard"}>
+                                            Dashboard
+                                        </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onClick={doLogout}>
                                         <LogOut className="w-4 h-4 mr-2" />
