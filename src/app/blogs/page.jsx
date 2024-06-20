@@ -52,9 +52,12 @@ const PostsPage = () => {
                     {posts.map((post) => (
                         <li
                             key={post._id}
-                            className="p-4 mb-4 border rounded-md shadow-md dark:bg-zinc-800 bg-slate-100"
+                            onClick={() => router.push(`/blogs/${post._id}`)}
+                            className="p-4 mb-4 border rounded-md shadow-md cursor-pointer dark:bg-zinc-800 bg-slate-100"
                         >
-                            <h2 className="text-2xl">{post.title}</h2>
+                            <h2 className="text-2xl duration-300 hover:text-blue-500">
+                                {post.title}
+                            </h2>
                             {/* <p>{post.content}</p> */}
                             <p className="text-sm">
                                 Author: {post.author.name} ({post.author.email})
