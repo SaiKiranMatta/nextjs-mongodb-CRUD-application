@@ -8,8 +8,8 @@ import Navbar from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "Next App with Auth",
-    description: "Next js boilerplate",
+    title: "Next Blog App",
+    description: "Next js Blog App",
 };
 
 export default async function RootLayout({ children }) {

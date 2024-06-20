@@ -25,11 +25,11 @@ const Navbar = () => {
                         <Link className=" hover:text-blue-500" href={"/"}>
                             Home
                         </Link>
-                        <Link className=" hover:text-blue-500" href={"/"}>
-                            Link1
+                        <Link className=" hover:text-blue-500" href={"/blogs"}>
+                            Blogs
                         </Link>
-                        <Link className=" hover:text-blue-500" href={"/"}>
-                            Link2
+                        <Link className=" hover:text-blue-500" href={"/create"}>
+                            Create
                         </Link>
                     </div>
                     <div className="flex flex-row items-center gap-4 ">
