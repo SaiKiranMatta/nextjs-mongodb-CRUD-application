@@ -15,26 +15,21 @@ const BlogPostPage = () => {
         const fetchUserPosts = async () => {
             try {
                 if (status === "authenticated" && session?.user?.email) {
-                    const response = await fetch(
-                        "/api/fetchuserposts", // Endpoint for fetching user posts
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ email: session.user.email }), // Send email in the request body
-                        }
-                    );
+                    const response = await fetch("/api/fetchuserposts", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ email: session.user.email }),
+                    });
 
                     if (!response.ok) {
                         throw new Error(`Error: ${response.statusText}`);
-                    } else {
-                        const data = await response.json();
-                        // console.log(data);
-                        setUserPosts(data);
-                        setLoading(false);
-                        console.log("Response is ok");
                     }
+
+                    const data = await response.json();
+                    setUserPosts(data);
+                    setLoading(false);
                 }
             } catch (err) {
                 setError(err.message);
@@ -45,44 +40,40 @@ const BlogPostPage = () => {
         fetchUserPosts();
     }, [session, status]);
 
+    const handleDeletePost = async (postId) => {
+        try {
+            const response = await fetch("/api/deletepost", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            // Remove the deleted post from userPosts state
+            setUserPosts(userPosts.filter((post) => post._id !== postId));
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     if (loading) {
-        return <p>Loading...</p>;
+        return <p className="pt-24">Loading...</p>;
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return <p className="pt-24">{error}</p>;
     }
 
     if (userPosts.length === 0) {
-        return <p>No posts found for the logged-in user</p>;
+        return <p className="pt-24">No posts found for the logged-in user</p>;
     }
 
     return (
-        // <div>
-        //     {userPosts.map((post) => (
-        //         <div
-        //             key={post._id}
-        //             className="flex flex-col items-start w-full px-8 pt-24"
-        //         >
-        //             <h1 className="text-4xl">{post.title}</h1>
-        //             <div className="w-full h-[0.1px] my-4 bg-zinc-600"></div>
-        //             <p className="mt-4">{post.content}</p>
-        //             <div className="w-full h-[0.1px] my-4 bg-zinc-600"></div>
-
-        //             <p className="mt-2 text-sm">
-        //                 Author: {post.author.name} ({post.author.email})
-        //             </p>
-        //             <div className="w-full h-[0.1px] my-4 bg-zinc-600"></div>
-
-        //             <p className="mt-2 text-sm">Category: {post.category}</p>
-        //             <div className="w-full h-[0.1px] my-4 bg-zinc-600"></div>
-
-        //             <p className="mt-2 text-sm">
-        //                 Created At: {new Date(post.createdAt).toLocaleString()}
-        //             </p>
-        //         </div>
-        //     ))}
-        // </div>
         <div className="flex flex-col items-center w-full px-8 pt-24">
             <h1 className="text-4xl">Authored Blog Posts</h1>
             {userPosts.length > 0 ? (
@@ -90,13 +81,16 @@ const BlogPostPage = () => {
                     {userPosts.map((post) => (
                         <li
                             key={post._id}
-                            onClick={() => router.push(`/blogs/${post._id}`)}
                             className="p-4 mb-4 border rounded-md shadow-md cursor-pointer dark:bg-zinc-800 bg-slate-100"
                         >
-                            <h2 className="text-2xl duration-300 hover:text-blue-500">
+                            <h2
+                                onClick={() =>
+                                    router.push(`/blogs/${post._id}`)
+                                }
+                                className="text-2xl duration-300 cursor-pointer hover:text-blue-500"
+                            >
                                 {post.title}
                             </h2>
-                            {/* <p>{post.content}</p> */}
                             <p className="text-sm">
                                 Author: {post.author.name} ({post.author.email})
                             </p>
@@ -105,6 +99,12 @@ const BlogPostPage = () => {
                                 Created At:{" "}
                                 {new Date(post.createdAt).toLocaleString()}
                             </p>
+                            <button
+                                onClick={() => handleDeletePost(post._id)}
+                                className="px-4 py-2 mt-2 text-white bg-red-500 rounded hover:bg-red-600"
+                            >
+                                Delete
+                            </button>
                         </li>
                     ))}
                 </ul>
