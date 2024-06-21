@@ -13,7 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+import { AlignJustify, LogOut } from "lucide-react";
 
 const Navbar = () => {
     const { data: session, status } = useSession();
@@ -31,15 +31,26 @@ const Navbar = () => {
                         <div className="mr-4 text-3xl font-normal dark:font-thin">
                             LOGO
                         </div>
-                        <Link className=" hover:text-blue-500" href={"/"}>
-                            Home
-                        </Link>
-                        <Link className=" hover:text-blue-500" href={"/blogs"}>
-                            Blogs
-                        </Link>
-                        <Link className=" hover:text-blue-500" href={"/create"}>
-                            Create
-                        </Link>
+                        <div className="items-center hidden gap-4 md:flex ">
+                            <Link
+                                className="duration-300 hover:text-blue-500"
+                                href={"/"}
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                className="duration-300 hover:text-blue-500"
+                                href={"/blogs"}
+                            >
+                                Blogs
+                            </Link>
+                            <Link
+                                className="duration-300 hover:text-blue-500"
+                                href={"/create"}
+                            >
+                                Create
+                            </Link>
+                        </div>
                     </div>
                     <div className="flex flex-row items-center gap-4 ">
                         <ModeToggle />
@@ -54,7 +65,7 @@ const Navbar = () => {
                                 <DropdownMenuTrigger className="px-4 py-2 font-light text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-400">
                                     Profile
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent className="bg-zinc-800">
+                                <DropdownMenuContent className="dark:bg-zinc-800 bg-zinc-50">
                                     <DropdownMenuLabel>
                                         My Account
                                     </DropdownMenuLabel>
@@ -78,6 +89,30 @@ const Navbar = () => {
                                 Login
                             </Link>
                         )}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger className="md:hidden">
+                                <AlignJustify />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="dark:bg-zinc-800 bg-zinc-50">
+                                {/* <DropdownMenuLabel>
+                                    My Account
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator /> */}
+                                <DropdownMenuItem>
+                                    <Link href={"/"}>Home</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link href={"/blogs"}>Blogs</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link href={"/create"}>Create</Link>
+                                </DropdownMenuItem>
+                                {/* <DropdownMenuItem onClick={doLogout}>
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <span>Log out</span>
+                                </DropdownMenuItem> */}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </div>
             )}
