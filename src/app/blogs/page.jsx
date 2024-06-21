@@ -32,8 +32,9 @@ const PostsPage = () => {
                 setLoading(false);
             }
         };
-
-        fetchPosts();
+        if (loading) {
+            fetchPosts();
+        }
     }, []);
 
     if (loading) {

@@ -4,6 +4,18 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 const BlogPostPage = () => {
     const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -99,12 +111,48 @@ const BlogPostPage = () => {
                                 Created At:{" "}
                                 {new Date(post.createdAt).toLocaleString()}
                             </p>
-                            <button
+                            {/* <button
                                 onClick={() => handleDeletePost(post._id)}
                                 className="px-4 py-2 mt-2 text-white bg-red-500 rounded hover:bg-red-600"
                             >
                                 Delete
-                            </button>
+                            </button> */}
+                            <div className="flex items-center justify-between w-full ">
+                                <AlertDialog>
+                                    <AlertDialogTrigger className="w-20 px-4 py-2 mt-2 text-center text-white bg-red-500 rounded hover:bg-red-600">
+                                        Delete
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>
+                                                Are you sure?
+                                            </AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone.
+                                                This will permanently the blog
+                                                and remove the data from our
+                                                servers.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction>
+                                                Delete
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                                <div
+                                    className="w-20 px-4 py-2 font-light text-center text-white bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-400"
+                                    onClick={() =>
+                                        router.push(`/edit/${post._id}`)
+                                    }
+                                >
+                                    Edit
+                                </div>
+                            </div>
                         </li>
                     ))}
                 </ul>
